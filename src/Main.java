@@ -15,3 +15,70 @@ public class Main {
         account.withdraw(amount);
     }
 }
+
+// BankAccount.java
+class BankAccount {
+    private double balance;
+
+    public BankAccount(double initialBalance) {
+        this.balance = initialBalance;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void deposit(double amount) {
+        balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+        } else {
+            System.out.println("Insufficient funds.");
+        }
+    }
+}
+
+// SavingsAccount.java
+class SavingsAccount extends BankAccount {
+    private double withdrawalLimit;
+    private double withdrawalFee;
+
+    public SavingsAccount(double initialBalance, double withdrawalLimit, double withdrawalFee) {
+        super(initialBalance);
+        this.withdrawalLimit = withdrawalLimit;
+        this.withdrawalFee = withdrawalFee;
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (amount <= withdrawalLimit) {
+            super.withdraw(amount);
+        } else {
+            System.out.println("Withdrawal limit exceeded. Fee applied.");
+            super.withdraw(amount + withdrawalFee);
+        }
+    }
+}
+
+// CheckingAccount.java
+class CheckingAccount extends BankAccount {
+    private double overdraftFee;
+
+    public CheckingAccount(double initialBalance, double overdraftFee) {
+        super(initialBalance);
+        this.overdraftFee = overdraftFee;
+    }
+
+    @Override
+    public void withdraw(double amount) {
+        if (amount <= getBalance()) {
+            super.withdraw(amount);
+        } else {
+            System.out.println("Overdraft fee applied.");
+            super.withdraw(amount + overdraftFee);
+        }
+    }
+}
